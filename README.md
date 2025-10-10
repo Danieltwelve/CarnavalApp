@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # carnaval_app
 
 A new Flutter project.
@@ -14,3 +15,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# CarnavalApp
+>>>>>>> 4a7f637c07232534fb5a2ea3f5f0b8dd772e2038

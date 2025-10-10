@@ -37,3 +37,4 @@ class WelcomePage extends StatelessWidget {
     );
   }
 }
+
