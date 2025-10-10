@@ -25,7 +25,7 @@ class WelcomePage extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 238, 238, 240), // color de fondo
       body: Center(
         child: Text(
-          "🎉 Bienvenido al Carnaval 🎉",
+          " Bienvenido al Carnaval de negros y blancos ",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 28,
