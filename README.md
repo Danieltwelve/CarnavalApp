@@ -1,20 +1,20 @@
-<<<<<<< HEAD
-# carnaval_app
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
 # CarnavalApp
->>>>>>> 4a7f637c07232534fb5a2ea3f5f0b8dd772e2038
+
+Aplicación Flutter para el Carnaval de Negros y Blancos.
+
+## Requisitos
+
+- Flutter 3.24+ (Dart SDK 3.9+)
+
+## Ejecutar
+
+1. Instala dependencias: `flutter pub get`
+2. Ejecuta en un dispositivo/emulador: `flutter run`
+
+## Tests
+
+Ejecuta las pruebas de widgets:
+
+```
+flutter test
+```
