@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376408084071",
+    "project_id": "flutterfire-carnaval",
+    "storage_bucket": "flutterfire-carnaval.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376408084071:android:d8e614b3473b3524248ec2",
+        "android_client_info": {
+          "package_name": "com.example.carnaval_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoZ2wAMHq4snEfspmav56NGeeGb0b8GME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

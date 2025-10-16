@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../application/register_controller.dart';
 
+/// Página de registro de nuevos usuarios
+/// Usa Provider para acceder al RegisterController compartido
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -21,6 +25,39 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  /// Maneja el envío del formulario de registro
+  Future<void> _onSubmit() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    
+    final controller = context.read<RegisterController>();
+    final ok = await controller.submit(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+    );
+    
+    if (!mounted) return;
+    
+    if (ok) {
+      // Registro exitoso
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('¡Cuenta creada exitosamente!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      // Volver a la página de login
+      Navigator.of(context).pop();
+    } else if (controller.error != null) {
+      // Muestra el error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(controller.error!),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Campo de correo
               TextFormField(
                 key: const Key('register_email_field'),
                 controller: _emailController,
@@ -39,6 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 decoration: const InputDecoration(
                   labelText: 'Correo electrónico',
                   hintText: 'tu@correo.com',
+                  prefixIcon: Icon(Icons.email),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Ingresa tu correo';
@@ -47,12 +86,15 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(height: 12),
+              
+              // Campo de contraseña
               TextFormField(
                 key: const Key('register_password_field'),
                 controller: _passwordController,
                 obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Contraseña',
+                  prefixIcon: Icon(Icons.lock),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Ingresa tu contraseña';
@@ -61,32 +103,43 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(height: 12),
+              
+              // Campo de confirmar contraseña
               TextFormField(
                 key: const Key('register_confirm_password_field'),
                 controller: _confirmPasswordController,
                 obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Confirmar contraseña',
+                  prefixIcon: Icon(Icons.lock_outline),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Confirma tu contraseña';
-                  if (value != _passwordController.text) return 'No coinciden';
+                  // Valida que ambas contraseñas coincidan
+                  if (value != _passwordController.text) return 'Las contraseñas no coinciden';
                   return null;
                 },
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                key: const Key('register_submit_button'),
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    // Aquí posteriormente se integrará Firebase Auth
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Registro enviado')),
-                    );
-                  }
+              
+              // Botón de registro con Consumer
+              Consumer<RegisterController>(
+                builder: (context, controller, _) {
+                  return ElevatedButton(
+                    key: const Key('register_submit_button'),
+                    onPressed: controller.isLoading ? null : _onSubmit,
+                    child: controller.isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Text('Crear cuenta'),
+                  );
                 },
-                child: const Text('Crear cuenta'),
               ),
+              
+              // Botón para volver al login
               TextButton(
                 key: const Key('back_to_login_button'),
                 onPressed: () => Navigator.of(context).pop(),

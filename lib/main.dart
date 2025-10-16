@@ -1,8 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+// Importamos el AuthWrapper que maneja la autenticación
+import 'widgets/auth_wrapper.dart';
+
+// Importamos las páginas
 import 'features/auth/presentation/pages/login_page.dart';
 import 'features/auth/presentation/pages/register_page.dart';
+import 'features/auth/presentation/pages/home_page.dart';
 
-void main() {
+// Importamos los controllers
+import 'features/auth/application/login_controller.dart';
+import 'features/auth/application/register_controller.dart';
+
+// Importamos el repository de Firebase (la implementación real)
+import 'features/auth/infrastructure/firebase_auth_repository.dart';
+
+/// Punto de entrada de la aplicación
+Future<void> main() async {
+  // Inicializa los bindings de Flutter antes de usar plugins
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Inicializa Firebase con las opciones configuradas
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
   runApp(const MyApp());
 }
 
@@ -11,58 +36,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const WelcomePage(),
-        '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
-      },
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-    );
-  }
-}
+    // Creamos UNA SOLA instancia del repository que usarán todos los controllers
+    final authRepo = FirebaseAuthRepository();
 
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 238, 238, 240), // color de fondo
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                " Bienvenido al Carnaval de negros y blancos ",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 10, 10, 10),
-                ),
-              ),
-              const SizedBox(height: 32),
-              FilledButton(
-                key: const Key('go_to_login_from_welcome'),
-                onPressed: () => Navigator.of(context).pushNamed('/login'),
-                child: const Text('Iniciar sesión'),
-              ),
-              const SizedBox(height: 12),
-              OutlinedButton(
-                key: const Key('go_to_register_from_welcome'),
-                onPressed: () => Navigator.of(context).pushNamed('/register'),
-                child: const Text('Crear cuenta'),
-              ),
-            ],
+    return MultiProvider(
+      // Proveemos los controllers a toda la app
+      providers: [
+        // LoginController disponible en toda la app
+        ChangeNotifierProvider(
+          create: (_) => LoginController(authRepo),
+        ),
+        // RegisterController disponible en toda la app
+        ChangeNotifierProvider(
+          create: (_) => RegisterController(authRepo),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Carnaval App',
+        
+        // La ruta inicial ahora es AuthWrapper
+        // que decide automáticamente si mostrar Welcome o Home
+        home: const AuthWrapper(),
+        
+        // Rutas nombradas para navegación
+        routes: {
+          '/login': (context) => const LoginPage(),
+          '/register': (context) => const RegisterPage(),
+          '/home': (context) => const HomePage(),
+        },
+        
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            brightness: Brightness.light,
           ),
+          useMaterial3: true,
         ),
       ),
     );
