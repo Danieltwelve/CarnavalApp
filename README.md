@@ -240,32 +240,6 @@ lib/
 
 ---
 
-## 🧪 Tests
-
-### Ejecutar Todos los Tests
-
-```powershell
-flutter test
-```
-
-### Ejecutar Test Específico
-
-```powershell
-flutter test test/auth_controllers_test.dart
-```
-
-### Tests con Coverage
-
-```powershell
-flutter test --coverage
-```
-
-### Analizar Código
-
-```powershell
-flutter analyze
-```
-
 ---
 
 ## ✨ Funcionalidades
