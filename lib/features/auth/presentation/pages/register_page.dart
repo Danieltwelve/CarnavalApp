@@ -62,90 +62,94 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Registro')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Campo de correo
-              TextFormField(
-                key: const Key('register_email_field'),
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Correo electrónico',
-                  hintText: 'tu@correo.com',
-                  prefixIcon: Icon(Icons.email),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Ingresa tu correo';
-                  if (!value.contains('@')) return 'Correo inválido';
-                  return null;
-                },
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Campo de correo
+                  TextFormField(
+                    key: const Key('register_email_field'),
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      labelText: 'Correo electrónico',
+                      hintText: 'tu@correo.com',
+                      prefixIcon: Icon(Icons.email),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Ingresa tu correo';
+                      if (!value.contains('@')) return 'Correo inválido';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // Campo de contraseña
+                  TextFormField(
+                    key: const Key('register_password_field'),
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Contraseña',
+                      prefixIcon: Icon(Icons.lock),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Ingresa tu contraseña';
+                      if (value.length < 6) return 'Mínimo 6 caracteres';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // Campo de confirmar contraseña
+                  TextFormField(
+                    key: const Key('register_confirm_password_field'),
+                    controller: _confirmPasswordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Confirmar contraseña',
+                      prefixIcon: Icon(Icons.lock_outline),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Confirma tu contraseña';
+                      // Valida que ambas contraseñas coincidan
+                      if (value != _passwordController.text) return 'Las contraseñas no coinciden';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  // Botón de registro con Consumer
+                  Consumer<RegisterController>(
+                    builder: (context, controller, _) {
+                      return ElevatedButton(
+                        key: const Key('register_submit_button'),
+                        onPressed: controller.isLoading ? null : _onSubmit,
+                        child: controller.isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : const Text('Crear cuenta'),
+                      );
+                    },
+                  ),
+                  
+                  // Botón para volver al login
+                  TextButton(
+                    key: const Key('back_to_login_button'),
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('¿Ya tienes cuenta? Inicia sesión'),
+                  ),
+                ],
               ),
-              const SizedBox(height: 12),
-              
-              // Campo de contraseña
-              TextFormField(
-                key: const Key('register_password_field'),
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Contraseña',
-                  prefixIcon: Icon(Icons.lock),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Ingresa tu contraseña';
-                  if (value.length < 6) return 'Mínimo 6 caracteres';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              
-              // Campo de confirmar contraseña
-              TextFormField(
-                key: const Key('register_confirm_password_field'),
-                controller: _confirmPasswordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Confirmar contraseña',
-                  prefixIcon: Icon(Icons.lock_outline),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Confirma tu contraseña';
-                  // Valida que ambas contraseñas coincidan
-                  if (value != _passwordController.text) return 'Las contraseñas no coinciden';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              
-              // Botón de registro con Consumer
-              Consumer<RegisterController>(
-                builder: (context, controller, _) {
-                  return ElevatedButton(
-                    key: const Key('register_submit_button'),
-                    onPressed: controller.isLoading ? null : _onSubmit,
-                    child: controller.isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text('Crear cuenta'),
-                  );
-                },
-              ),
-              
-              // Botón para volver al login
-              TextButton(
-                key: const Key('back_to_login_button'),
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('¿Ya tienes cuenta? Inicia sesión'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

@@ -57,7 +57,8 @@ class AuthWrapper extends StatelessWidget {
 
         // Si hay un usuario autenticado → HomePage
         if (user != null) {
-          return const HomePage();
+          // Pasa el usuario actual a HomePage si es necesario
+          return HomePage();
         }
 
         // Si NO hay usuario autenticado → WelcomePage

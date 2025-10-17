@@ -28,7 +28,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -57,13 +57,13 @@ class MyApp extends StatelessWidget {
         
         // La ruta inicial ahora es AuthWrapper
         // que decide automáticamente si mostrar Welcome o Home
-        home: const AuthWrapper(),
+        home: AuthWrapper(),
         
         // Rutas nombradas para navegación
         routes: {
-          '/login': (context) => const LoginPage(),
-          '/register': (context) => const RegisterPage(),
-          '/home': (context) => const HomePage(),
+          '/login': (context) =>  LoginPage(),
+          '/register': (context) =>  RegisterPage(),
+          '/home': (context) =>  HomePage(),
         },
         
         theme: ThemeData(
