@@ -45,8 +45,10 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Colors.green,
         ),
       );
-      // Volver a la página de login
-      Navigator.of(context).pop();
+      // Navega de vuelta a la ruta raíz (/) donde está el AuthWrapper
+      // El AuthWrapper detectará automáticamente que hay un usuario autenticado
+      // y mostrará el HomePage
+      Navigator.of(context).popUntil((route) => route.isFirst);
     } else if (controller.error != null) {
       // Muestra el error
       ScaffoldMessenger.of(context).showSnackBar(

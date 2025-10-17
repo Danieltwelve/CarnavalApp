@@ -53,8 +53,10 @@ class _LoginPageState extends State<LoginPage> {
           duration: Duration(seconds: 1),
         ),
       );
-      // Firebase ya inició sesión, el AuthWrapper detectará el cambio
-      // y automáticamente navegará a HomePage
+      // Navega de vuelta a la ruta raíz (/) donde está el AuthWrapper
+      // El AuthWrapper detectará automáticamente que hay un usuario autenticado
+      // y mostrará el HomePage
+      Navigator.of(context).popUntil((route) => route.isFirst);
     } else if (controller.error != null) {
       // Muestra el error en un SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -70,13 +72,15 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Iniciar sesión')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
               // Campo de correo electrónico
               TextFormField(
                 key: const Key('login_email_field'),
@@ -136,6 +140,8 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text('¿No tienes cuenta? Regístrate'),
               ),
             ],
+          ),
+        ),
           ),
         ),
       ),
