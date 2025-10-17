@@ -333,7 +333,7 @@ flutterfire configure --project=flutterfire-carnaval
 
 **Solución**: Agrega al PATH:
 ```powershell
-$env:Path += ";C:\Users\jesus\AppData\Local\Pub\Cache\bin"
+$env:Path += ";C:\Users\User\AppData\Local\Pub\Cache\bin"
 ```
 
 ### Error: "Unable to find bundled Java version"
