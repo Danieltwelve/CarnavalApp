@@ -53,16 +53,15 @@ class AuthWrapper extends StatelessWidget {
         }
 
         // Obtenemos el usuario del snapshot
-        final user = snapshot.data;
-
-        // Si hay un usuario autenticado → HomePage
-        if (user != null) {
-          // Pasa el usuario actual a HomePage si es necesario
-          return HomePage();
-        }
+        final firebaseUser = snapshot.data;
 
         // Si NO hay usuario autenticado → WelcomePage
-        return const WelcomePage();
+        if (firebaseUser == null) {
+          return const WelcomePage();
+        }
+
+        // Si hay usuario autenticado → HomePage
+        return const HomePage();
       },
     );
   }

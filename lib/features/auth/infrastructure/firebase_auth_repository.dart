@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../domain/auth_repository.dart';
+import '../../user/infrastructure/user_repository.dart';
+import '../../user/domain/app_user.dart';
 
 /// Implementación de autenticación usando Firebase
 /// Esta clase conecta con los servicios de Firebase Authentication
 class FirebaseAuthRepository implements AuthRepository {
   // Instancia de FirebaseAuth que nos da acceso a todos los métodos de autenticación
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UserRepository _userRepo = UserRepository();
 
   /// Inicia sesión con correo y contraseña
   /// Lanza excepciones con mensajes 
@@ -30,11 +33,19 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<void> signUp({required String email, required String password}) async {
     try {
       // Crea una nueva cuenta en Firebase
-      await _auth.createUserWithEmailAndPassword(
+      final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      // Usuario creado exitosamente
+      
+      // Crear documento en Firestore con el rol de visitor por defecto
+      if (credential.user != null) {
+        await _userRepo.createUser(
+          uid: credential.user!.uid,
+          email: email,
+          role: UserRole.visitor, // Por defecto todos son visitantes
+        );
+      }
     } on FirebaseAuthException catch (e) {
       // Capturamos errores y los traducimos
       throw _handleAuthException(e);
@@ -45,6 +56,25 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<void> signOut() async {
     await _auth.signOut();
+  }
+
+  /// Obtiene el usuario actual con su rol desde Firestore
+  Future<AppUser?> getCurrentUser() async {
+    final firebaseUser = _auth.currentUser;
+    if (firebaseUser == null) return null;
+
+    return await _userRepo.getUser(firebaseUser.uid);
+  }
+
+  /// Stream del usuario actual con rol
+  Stream<AppUser?> get currentUserStream {
+    return _auth.authStateChanges().asyncExpand((firebaseUser) async* {
+      if (firebaseUser == null) {
+        yield null;
+      } else {
+        yield await _userRepo.getUser(firebaseUser.uid);
+      }
+    });
   }
 
   /// Traduce los códigos de error de Firebase a mensajes en español
