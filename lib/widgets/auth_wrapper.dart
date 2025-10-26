@@ -30,10 +30,10 @@ class AuthWrapper extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.error_outline,
                     size: 64,
-                    color: Colors.red,
+                    color: Theme.of(context).colorScheme.error,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -61,7 +61,7 @@ class AuthWrapper extends StatelessWidget {
         }
 
         // Si hay usuario autenticado → HomePage
-        return const HomePage();
+        return HomePage();
       },
     );
   }
@@ -74,7 +74,6 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 238, 238, 240),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -99,13 +98,13 @@ class WelcomePage extends StatelessWidget {
                 const SizedBox(height: 32),
                 
                 // Título de bienvenida
-                const Text(
+                Text(
                   "Bienvenido al\nCarnaval de Negros y Blancos",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 10, 10, 10),
+                    color: Theme.of(context).colorScheme.onSurface,
                     height: 1.2,
                   ),
                 ),
@@ -117,7 +116,7 @@ class WelcomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.grey[700],
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: 48),

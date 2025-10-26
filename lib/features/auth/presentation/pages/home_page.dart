@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../carnaval/presentation/pages/carnaval_home_page.dart';
 import '../../../user/domain/app_user.dart';
 import '../../../user/infrastructure/user_repository.dart';
+import '../../../../core/theme/theme_notifier.dart';
 
 /// Pantalla principal de la aplicación que sirve como punto de entrada.
 /// Muestra la página principal del Carnaval y permite cerrar sesión.
@@ -49,6 +50,11 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _toggleTheme() {
+    // Simplemente llama al notificador global
+    themeNotifier.toggle();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -62,21 +68,34 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // Barra superior con título y botón para cerrar sesión en Firebase
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Inicio'),
-            if (_currentUser != null)
-              Text(
-                _currentUser!.isAdmin ? 'Administrador' : 'Visitante',
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
+        title: const Text('Inicio'),
+        // Subtítulo con el rol del usuario
+        bottom: _currentUser != null
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(24),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 16, bottom: 6),
+                  child: Text(
+                    _currentUser!.isAdmin ? 'Administrador' : 'Visitante',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
                 ),
-              ),
-          ],
-        ),
+              )
+            : null,
         actions: [
+          // Botón para cambiar tema
+          IconButton(
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.dark
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+            ),
+            tooltip: 'Cambiar tema',
+            onPressed: _toggleTheme,
+          ),
           // Botón de cerrar sesión
           IconButton(
             icon: const Icon(Icons.logout),
@@ -100,8 +119,8 @@ class _HomePageState extends State<HomePage> {
                 vertical: 12,
               ),
               color: _currentUser!.isAdmin
-                  ? Colors.amber.shade100
-                  : Colors.blue.shade50,
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Theme.of(context).colorScheme.secondaryContainer,
               child: Row(
                 children: [
                   Icon(
@@ -109,8 +128,8 @@ class _HomePageState extends State<HomePage> {
                         ? Icons.admin_panel_settings
                         : Icons.person,
                     color: _currentUser!.isAdmin
-                        ? Colors.amber.shade900
-                        : Colors.blue.shade900,
+                        ? Theme.of(context).colorScheme.onPrimaryContainer
+                        : Theme.of(context).colorScheme.onSecondaryContainer,
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -120,8 +139,8 @@ class _HomePageState extends State<HomePage> {
                           : 'Navegando como visitante',
                       style: TextStyle(
                         color: _currentUser!.isAdmin
-                            ? Colors.amber.shade900
-                            : Colors.blue.shade900,
+                            ? Theme.of(context).colorScheme.onPrimaryContainer
+                            : Theme.of(context).colorScheme.onSecondaryContainer,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

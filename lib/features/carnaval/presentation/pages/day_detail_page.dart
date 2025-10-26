@@ -31,13 +31,14 @@ class DayDetailPage extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   shadows: [
                     Shadow(
                       blurRadius: 8.0,
-                      color: Colors.black45,
-                      offset: Offset(2, 2),
+                      color: Theme.of(context).shadowColor.withOpacity(0.5),
+                      offset: const Offset(2, 2),
                     ),
                   ],
                 ),
@@ -50,7 +51,7 @@ class DayDetailPage extends StatelessWidget {
                   child: Icon(
                     _getIconForTitle(title),
                     size: 70,
-                    color: Colors.white.withOpacity(0.3),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
                   ),
                 ),
               ),
@@ -59,38 +60,26 @@ class DayDetailPage extends StatelessWidget {
 
           // Contenido principal
           SliverToBoxAdapter(
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFFFAFAFA),
-                    Color(0xFFF5F5F5),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Card de información general
-                    _buildInfoCard(context),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Sección de actividades
-                    _buildActivitiesSection(),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Sección del mapa
-                    _buildMapSection(),
-                    
-                    const SizedBox(height: 20),
-                  ],
-                ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Card de información general
+                  _buildInfoCard(context),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Sección de actividades
+                  _buildActivitiesSection(),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Sección del mapa
+                  _buildMapSection(),
+                  
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
           ),
@@ -111,7 +100,7 @@ class DayDetailPage extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.white,
+              Theme.of(context).colorScheme.surface,
               _getAccentColorForTitle(title).withOpacity(0.1),
             ],
             begin: Alignment.topLeft,
@@ -136,7 +125,7 @@ class DayDetailPage extends StatelessWidget {
               ),
               child: Icon(
                 _getIconForTitle(title),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 size: 32,
               ),
             ),
@@ -145,37 +134,37 @@ class DayDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Evento Especial',
                     style: TextStyle(
                       fontSize: 14,
-                      color: CarnavalColors.textLight,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: CarnavalColors.textDark,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.location_on_outlined,
                         size: 16,
-                        color: CarnavalColors.textLight,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                       const SizedBox(width: 4),
-                      const Text(
+                      Text(
                         'San Juan de Pasto',
                         style: TextStyle(
                           fontSize: 12,
-                          color: CarnavalColors.textLight,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],

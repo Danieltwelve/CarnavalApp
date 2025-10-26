@@ -98,15 +98,16 @@ class CarnavalHomePage extends StatelessWidget {
               floating: false,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                title: const Text(
+                title: Text(
                   'Carnaval 2026',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     shadows: [
                       Shadow(
                         blurRadius: 10.0,
-                        color: Colors.black45,
-                        offset: Offset(2, 2),
+                        color: Theme.of(context).shadowColor.withOpacity(0.5),
+                        offset: const Offset(2, 2),
                       ),
                     ],
                   ),
@@ -119,7 +120,7 @@ class CarnavalHomePage extends StatelessWidget {
                     child: Icon(
                       Icons.festival,
                       size: 80,
-                      color: Colors.white.withOpacity(0.3),
+                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
                     ),
                   ),
                 ),
@@ -141,8 +142,11 @@ class CarnavalHomePage extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Colors.white, Color(0xFFF8BBD0)],
+                          gradient: LinearGradient(
+                            colors: [
+                              Theme.of(context).colorScheme.surface,
+                              Theme.of(context).colorScheme.primaryContainer,
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -156,14 +160,14 @@ class CarnavalHomePage extends StatelessWidget {
                                 color: CarnavalColors.morado,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.info_outline_rounded,
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                                 size: 28,
                               ),
                             ),
                             const SizedBox(width: 16),
-                            const Expanded(
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -172,15 +176,15 @@ class CarnavalHomePage extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: CarnavalColors.textDark,
+                                      color: Theme.of(context).colorScheme.onSurface,
                                     ),
                                   ),
-                                  SizedBox(height: 4),
+                                  const SizedBox(height: 4),
                                   Text(
                                     'UNESCO • San Juan de Pasto, Colombia',
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color: CarnavalColors.textLight,
+                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                                     ),
                                   ),
                                 ],
@@ -242,7 +246,7 @@ class CarnavalHomePage extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 16),
       child: Card(
         elevation: 6,
-        shadowColor: Colors.black26,
+        shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
